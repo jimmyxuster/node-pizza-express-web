@@ -3,6 +3,11 @@
 'use strict';
 const path = require('path');
 
+function isObject(value) {
+  const type = typeof value;
+  return !!value && (type === 'object' || type === 'function');
+}
+
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -17,7 +22,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1553062333009_9507';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = ['proxy'];
 
   config.cluster = {
     listen: {
@@ -26,6 +31,31 @@ module.exports = appInfo => {
       hostname: '0.0.0.0',
     }
   };
+
+  config.proxy = {
+    match: '/api',
+    target: 'http://54.211.21.205/',
+    proxyReqPathResolver: (ctx) => {
+      return '/PizzaExpress-api/Public/demo/' + ctx.request.search
+    },
+    proxyReqOptDecorator: function(proxyReqOpts, ctx) {
+      proxyReqOpts.headers['content-type'] = 'application/x-www-form-urlencoded';
+      return proxyReqOpts;
+    },
+    proxyReqBodyDecorator: function(bodyContent, ctx) {
+      let formBody = '';
+      if (typeof bodyContent === 'object') {
+        for (let key in bodyContent) {
+          if (formBody.length) {
+            formBody += '&';
+          }
+          let value = isObject(bodyContent[key]) ? JSON.stringify(bodyContent[key]) : bodyContent[key]
+          formBody += `${key}=${value}`;
+        }
+      }
+      return formBody;
+    }
+  }
 
   config.static = {
     dir: [
@@ -43,6 +73,12 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+  };
+
+  config.security = {
+    csrf: {
+      enable: false
+    }
   };
 
   return {
