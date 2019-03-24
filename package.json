@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "egg": "^2.15.1",
+    "egg-mysql": "^3.0.0",
     "egg-scripts": "^2.11.0",
     "http-proxy-middleware": "^0.19.1",
     "koa-better-http-proxy": "^0.2.4"

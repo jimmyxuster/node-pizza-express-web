@@ -81,6 +81,16 @@ module.exports = appInfo => {
     }
   };
 
+  config.mysql = {
+    client: {
+      host: 'pizza-express.ccz15ohowdvl.us-east-1.rds.amazonaws.com',
+      port: '3306',
+      user: 'root',
+      password: 'pizzaexpressapp',
+      database: 'pizza_express',
+    }
+  }
+
   return {
     ...config,
     ...userConfig,
