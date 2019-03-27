@@ -44,7 +44,8 @@ class Alipay {
       extend_params: opts.extendParams,
       enable_pay_channels: opts.enablePayChannels,
       disable_pay_channels: opts.disablePayChannels,
-      store_id: opts.storeId
+      store_id: opts.storeId,
+      return_url: opts.returnUrl
     };
 
     var params = this.makeParams('alipay.trade.wap.pay', biz_content);

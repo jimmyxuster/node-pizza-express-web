@@ -3,9 +3,8 @@ const BaseController = require('./base');
 
 class PayController extends BaseController {
   async wapPay() {
-    const { id } = this.ctx.request.body;
     try {
-      const payGateway = await this.ctx.service.alipay.wapPay(id);
+      const payGateway = await this.ctx.service.alipay.wapPay(this.ctx.request.body);
       this.success({url: payGateway});
     } catch (e) {
       this.error(1000, e.message);

@@ -13,7 +13,8 @@ const alipayClient = new Alipay({
 });
 
 class AlipayService extends Service {
-  async wapPay(orderId) {
+  async wapPay(opts) {
+    const { orderId, returnUrl } = opts;
     console.log(`${this.app.config.proxy.target}PizzaExpress-api/Public/demo/`)
     let response = await request({
       url: `${this.app.config.proxy.target}PizzaExpress-api/Public/demo/`,
@@ -43,7 +44,8 @@ class AlipayService extends Service {
         timeout: '15m',
         amount: lodash.get(response, ['data', 'price']) || '0.1',
         product_code: 'QUICK_WAP_PAY',
-        goods_type: "1"
+        goods_type: "1",
+        returnUrl
       });
       return 'https://openapi.alipaydev.com/gateway.do?' + url;
     } else {
