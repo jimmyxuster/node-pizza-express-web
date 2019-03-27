@@ -14,11 +14,15 @@ const alipayClient = new Alipay({
 
 class AlipayService extends Service {
   async wapPay(orderId) {
+    console.log(`${this.app.config.proxy.target}PizzaExpress-api/Public/demo/`)
     let response = await request({
       url: `${this.app.config.proxy.target}PizzaExpress-api/Public/demo/`,
       method: 'POST',
       type: 'application/x-www-form-urlencoded',
-      body: `service=Order.GetBaseInfo&order_id=${orderId}`
+      form: {
+        service: 'Order.GetBaseInfo',
+        order_id: orderId
+      }
     })
     if (response) {
       response = response.json();
