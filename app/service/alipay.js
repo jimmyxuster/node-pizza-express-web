@@ -63,11 +63,11 @@ class AlipayService extends Service {
   }
   async notify (body) {
     if (alipayClient.signVerify(body)) {
-      const { out_trade_id: outTradeId, trade_status } = body;
+      const { out_trade_no: outTradeNo, trade_status } = body;
       const status = STATUS_MAP[trade_status];
       if (status) {
-        await this.app.mysql.update('order', {status}, {where: {outTradeId}, columns: ['status']});
-        this.ctx.logger.info('Payment success, outTradeId is %s', outTradeId);
+        await this.app.mysql.update('order', {status}, {where: {outTradeId: outTradeNo}, columns: ['status']});
+        this.ctx.logger.info('Payment success, outTradeNo is %s', outTradeNo);
       }
     } else {
       throw new Error('SignVerify Failed');
