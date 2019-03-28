@@ -82,7 +82,17 @@ utl.encodeParams = function (params) {
  * @returns {Boolean}
  */
 utl.signVerify = function (str, sign, publicKey, signType) {
+    // var sha;
+    // if(signType === 'RSA2') {
+    //     sha = crypto.createSign('RSA-SHA256');
+    // } else {
+    //     sha = crypto.createSign('RSA-SHA1');
+    // }
+    // sha.update(str, 'utf8');
+    // console.error(publicKey);
+    // return sha.sign(publicKey, 'base64') === sign;
     var verify;
+    console.error('str', str);
     if(signType === 'RSA2') {
         verify = crypto.createVerify('RSA-SHA256');
     } else {

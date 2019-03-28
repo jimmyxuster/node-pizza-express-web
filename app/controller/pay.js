@@ -12,10 +12,10 @@ class PayController extends BaseController {
   }
   async notify() {
     try {
-      this.ctx.logger.info('Notify', JSON.stringify(this.ctx.request.body));
       await this.ctx.service.alipay.notify(this.ctx.request.body);
       this.ctx.body = 'success';
     } catch (e) {
+      this.ctx.logger.info('Notify Fail!!!', e.message);
       this.ctx.body = 'fail';
     }
   }

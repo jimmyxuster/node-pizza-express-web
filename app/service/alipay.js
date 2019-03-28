@@ -62,7 +62,7 @@ class AlipayService extends Service {
     }
   }
   async notify (body) {
-    if (util.signVerify(body)) {
+    if (alipayClient.signVerify(body)) {
       const { out_trade_id: outTradeId, trade_status } = body;
       const status = STATUS_MAP[trade_status];
       if (status) {
@@ -70,7 +70,6 @@ class AlipayService extends Service {
         this.ctx.logger.info('Payment success, outTradeId is %s', outTradeId);
       }
     } else {
-      this.ctx.logger.warn('SignVerifyFailed, request body: %j', body);
       throw new Error('SignVerify Failed');
     }
   }
