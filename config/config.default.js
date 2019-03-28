@@ -32,6 +32,10 @@ module.exports = appInfo => {
     }
   };
 
+  config.logger = {
+    disableConsoleAfterReady: false,
+  };
+
   config.proxy = {
     match: '/api',
     target: 'http://54.211.21.205/',
