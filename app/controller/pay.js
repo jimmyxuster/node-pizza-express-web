@@ -10,6 +10,14 @@ class PayController extends BaseController {
       this.error(1000, e.message);
     }
   }
+  async notify() {
+    try {
+      await this.ctx.service.alipay.notify(this.ctx.request.body);
+      this.ctx.body = 'success';
+    } catch (e) {
+      this.ctx.body = 'fail';
+    }
+  }
 }
 
 module.exports = PayController;
