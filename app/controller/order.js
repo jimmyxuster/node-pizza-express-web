@@ -9,6 +9,14 @@ class OrderController extends BaseController {
       this.fail('保存退款信息失败');
     }
   }
+  async getOrders () {
+    try {
+      const data = await this.ctx.service.order.getOrders(this.ctx.request.query);
+      this.success(data)
+    } catch (e) {
+      this.fail('获取订单失败');
+    }
+  }
 }
 
 module.exports = OrderController;
