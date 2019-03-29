@@ -4,7 +4,7 @@ class UserService extends Service {
   async requestRefund (body) {
     const { orderId: id, refundReason } = body;
     if (id && refundReason) {
-      await this.app.mysql.update('order', {id, refundReason});
+      await this.app.mysql.update('order', {id, refundReason, status: '-1'});
     } else {
       throw new Error('缺少必要信息');
     }
