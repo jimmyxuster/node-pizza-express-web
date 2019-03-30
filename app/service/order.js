@@ -15,10 +15,10 @@ class UserService extends Service {
     const whereExp = _whereExp.length ? `${_whereExp} AND order.id = foodorder.orderId` : ' WHERE order.id = foodorder.orderId ';
     const offsetExp = this.app.mysql._limit(+pageSize, page * pageSize);
     const rows = await this.app.mysql.query(`SELECT *, count(order.id) as foodCount FROM \`order\` join \`foodorder\` ${whereExp} GROUP BY order.id ORDER BY order.id DESC ${offsetExp}`);
-    const total = await this.app.mysql.count('order', restProps);
+    const total = await this.app.mysql.query(`SELECT count(*) as total from (SELECT order.id FROM \`order\` join \`foodorder\` ${whereExp} GROUP BY order.id) as child`);
     return {
       data: rows,
-      total
+      total: total[0].total,
     }
   }
 }
