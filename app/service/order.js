@@ -11,14 +11,10 @@ class UserService extends Service {
   }
   async getOrders (body) {
     const { page = 0, pageSize = 10, ...restProps } = body;
-    const rows = await this.app.mysql.select('order', 
-      {
-        where: restProps,
-        orders: [['id', 'desc']],
-        limit: +pageSize,
-        offset: page * pageSize
-      }
-    )
+    const _whereExp = this.app.mysql._where(restProps);
+    const whereExp = _whereExp.length ? `${_whereExp} AND order.id = foodorder.orderId` : ' WHERE order.id = foodorder.orderId ';
+    const offsetExp = this.app.mysql._limit(+pageSize, page * pageSize);
+    const rows = await this.app.mysql.query(`SELECT *, count(order.id) as foodCount FROM \`order\` join \`foodorder\` ${whereExp} GROUP BY order.id ORDER BY order.id DESC ${offsetExp}`);
     const total = await this.app.mysql.count('order', restProps);
     return {
       data: rows,

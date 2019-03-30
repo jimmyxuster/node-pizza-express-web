@@ -6,7 +6,7 @@ class OrderController extends BaseController {
       await this.ctx.service.order.requestRefund(this.ctx.request.body);
       this.success();
     } catch (e) {
-      this.fail('保存退款信息失败');
+      this.error('保存退款信息失败');
     }
   }
   async getOrders () {
@@ -14,7 +14,7 @@ class OrderController extends BaseController {
       const data = await this.ctx.service.order.getOrders(this.ctx.request.query);
       this.success(data)
     } catch (e) {
-      this.fail('获取订单失败');
+      this.error('获取订单失败');
     }
   }
 }
