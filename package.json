@@ -31,6 +31,7 @@
   "scripts": {
     "start": "egg-scripts start --daemon --title=egg-server-node-pizza-express-web",
     "stop": "egg-scripts stop --title=egg-server-node-pizza-express-web",
+    "restart": "npm stop && npm start",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",

@@ -29,8 +29,8 @@ class UserService extends Service {
     // console.error('restProps', restProps);
     let whereExp = this.app.mysql._where(restProps);
     const rangeWheres = [getTimeRangeWhere('order.createTime', createTime), getTimeRangeWhere('order.arriveTime', arriveTime)].filter(str => str !== '').join('AND');
-    whereExp = whereExp.length ? `${whereExp} ${rangeWheres ? 'AND' : ''} ${rangeWheres}` : ` WHERE ${rangeWheres}`;
-    whereExp = whereExp.length ? `${whereExp} AND order.id = foodorder.orderId` : ' WHERE order.id = foodorder.orderId ';
+    whereExp = whereExp.trim().length ? `${whereExp} ${rangeWheres ? 'AND' : ''} ${rangeWheres}` : ` ${rangeWheres ? 'WHERE' : ''} ${rangeWheres}`;
+    whereExp = whereExp.trim().length ? `${whereExp} AND order.id = foodorder.orderId` : ' WHERE order.id = foodorder.orderId ';
     const offsetExp = this.app.mysql._limit(+pageSize, page * pageSize);
     console.error('sql:', `SELECT *, count(order.id) as foodCount FROM \`order\` join \`foodorder\` ${whereExp} GROUP BY order.id ORDER BY order.id DESC ${offsetExp}`)
     const rows = await this.app.mysql.query(`SELECT *, count(order.id) as foodCount FROM \`order\` join \`foodorder\` ${whereExp} GROUP BY order.id ORDER BY order.id DESC ${offsetExp}`);
