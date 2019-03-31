@@ -61,6 +61,24 @@ class AlipayService extends Service {
       throw new Error('查询订单失败');
     }
   }
+  async refund (id) {
+    const order = await this.app.mysql.queryOne('SELECT * FROM \`order\` WHERE \`id\` = ?', id);
+    if (order && order.outTradeId && order.status !== '-2') {
+      let ret = await alipayClient.refund({
+        outTradeId: order.outTradeId,
+        refundAmount: order.price,
+      });
+      ret = ret.json();
+      console.error('ret', ret)
+      if (lodash.get(ret, ['alipay_trade_refund_response', 'code']) !== '10000') {
+        throw new Error(lodash.get(ret, ['alipay_trade_refund_response', 'msg']));
+      } else {
+        await this.app.mysql.update('order', { id, status: '-2' });
+      }
+    } else {
+      throw new Error('该笔订单无可退款金额');
+    }
+  }
   async notify (body) {
     if (alipayClient.signVerify(body)) {
       const { out_trade_no: outTradeNo, trade_status } = body;

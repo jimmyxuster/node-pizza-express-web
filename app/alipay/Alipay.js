@@ -134,11 +134,9 @@ class Alipay {
 
     var body = utl.processParams(params, this.rsaPrivate, this.signType);
 
-    utl.request({
+    return utl.request({
         method: 'GET',
-        url:  body
-    }).then(function (ret) {
-        console.log("***** ret.body=" + body);
+        url: (this.sandbox? alipay_gate_way_sandbox : alipay_gate_way) + '?' + body
     });
   }
 

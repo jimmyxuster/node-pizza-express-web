@@ -19,6 +19,19 @@ class PayController extends BaseController {
       this.ctx.body = 'fail';
     }
   }
+  async refund() {
+    const { id } = this.ctx.request.body;
+    if (!id) {
+      this.ctx.throw(400);
+      return;
+    }
+    try {
+      await this.ctx.service.alipay.refund(id);
+      this.success();
+    } catch (e) {
+      this.error(1000, '退款失败，错误信息：' + e.message);
+    }
+  }
 }
 
 module.exports = PayController;
