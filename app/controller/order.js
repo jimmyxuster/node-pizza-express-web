@@ -11,9 +11,10 @@ class OrderController extends BaseController {
   }
   async getOrders () {
     try {
-      const data = await this.ctx.service.order.getOrders(this.ctx.request.query);
+      const data = await this.ctx.service.order.getOrders({...this.ctx.request.query, ...this.ctx.request.queries});
       this.success(data)
     } catch (e) {
+      console.error(e);
       this.error('获取订单失败');
     }
   }

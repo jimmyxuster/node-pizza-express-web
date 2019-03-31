@@ -12,6 +12,7 @@
     "egg-scripts": "^2.11.0",
     "http-proxy-middleware": "^0.19.1",
     "koa-better-http-proxy": "^0.2.4",
+    "moment": "^2.24.0",
     "request": "^2.88.0"
   },
   "devDependencies": {
