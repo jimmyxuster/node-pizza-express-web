@@ -63,7 +63,7 @@ class AlipayService extends Service {
   }
   async refund (id) {
     const order = await this.app.mysql.queryOne('SELECT * FROM \`order\` WHERE \`id\` = ?', id);
-    if (order && order.outTradeId && order.status !== '-2') {
+    if (order && order.outTradeId && order.status !== -2) {
       let ret = await alipayClient.refund({
         outTradeId: order.outTradeId,
         refundAmount: order.price,
@@ -73,7 +73,7 @@ class AlipayService extends Service {
       if (lodash.get(ret, ['alipay_trade_refund_response', 'code']) !== '10000') {
         throw new Error(lodash.get(ret, ['alipay_trade_refund_response', 'msg']));
       } else {
-        await this.app.mysql.update('order', { id, status: '-2' });
+        await this.app.mysql.update('order', { id, status: -2 });
       }
     } else {
       throw new Error('该笔订单无可退款金额');
