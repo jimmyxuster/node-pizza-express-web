@@ -17,9 +17,8 @@ const STATUS_MAP = {
 };
 
 class AlipayService extends Service {
-  async wapPay(opts) {
+  async _generatePayQuery(opts) {
     const { orderId, returnUrl } = opts;
-    console.log(`${this.app.config.proxy.target}PizzaExpress-api/Public/demo/`)
     let response = await util.request({
       url: `${this.app.config.proxy.target}PizzaExpress-api/Public/demo/`,
       method: 'POST',
@@ -56,10 +55,17 @@ class AlipayService extends Service {
         id: +orderId,
         outTradeId
       });
-      return 'https://openapi.alipaydev.com/gateway.do?' + url;
+      return url;
     } else {
       throw new Error('查询订单失败');
     }
+  }
+  async wapPay(opts) {
+    const query = this._generatePayQuery(opts);
+    return 'https://openapi.alipaydev.com/gateway.do?' + query;
+  }
+  async appPay(opts) {
+    return this._generatePayQuery(opts);
   }
   async refund (id) {
     const order = await this.app.mysql.queryOne('SELECT * FROM \`order\` WHERE \`id\` = ?', id);

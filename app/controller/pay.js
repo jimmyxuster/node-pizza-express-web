@@ -10,6 +10,14 @@ class PayController extends BaseController {
       this.error(1000, e.message);
     }
   }
+  async appPay() {
+    try {
+      const payQuery = await this.ctx.service.alipay.appPay(this.ctx.request.body);
+      this.success({query: payQuery});
+    } catch (e) {
+      this.error(1000, e.message);
+    }
+  }
   async notify() {
     try {
       await this.ctx.service.alipay.notify(this.ctx.request.body);
