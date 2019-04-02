@@ -3,9 +3,10 @@ const BaseController = require('./base');
 class MenuController extends BaseController {
   async index () {
     try {
-      const menu = await this.ctx.service.menu.getAllFoods(this.ctx.request.query);
+      const menu = await this.ctx.service.menu.getMenu(this.ctx.request.query);
       this.success(menu);
     } catch (e) {
+      console.error(e);
       this.error('获取菜单失败');
     }
   }

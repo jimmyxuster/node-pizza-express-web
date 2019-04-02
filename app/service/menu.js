@@ -5,7 +5,16 @@ const BASE_SELECT_MENU_SQL = 'SELECT * FROM `food` join `foodcategory` on food.c
 class MenuService extends Service {
   async getMenu(query) {
     const { page, pageSize, category, id } = query;
-    const where = this.app.mysql._where({categoryId: category, id});
+    const queryItems = {
+      categoryId: category,
+      'food.id': id,
+    };
+    Object.keys(queryItems).forEach(key => {
+      if (queryItems[key] == null) {
+        delete queryItems[key];
+      }
+    });
+    const where = this.app.mysql._where(queryItems);
     const limit = this.app.mysql._limit(+pageSize, page * pageSize);
     const data = await this.app.mysql.query(`${BASE_SELECT_MENU_SQL}${where}${limit}`);
     const count = await this.app.mysql.query(`${BASE_SELECT_MENU_SQL}${where}`.replace('*', 'count(*) as total'));
