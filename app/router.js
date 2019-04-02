@@ -12,4 +12,6 @@ module.exports = app => {
   router.post('/node_api/order/requestRefund', controller.order.requestRefund);
   router.get('/node_api/manage/order', controller.order.getOrders);
   router.post('/node_api/manage/order/refund', controller.pay.refund);
+  router.resources('menu', '/node_api/manage/menu', controller.menu);
+  router.resources('category', '/node_api/manage/category', controller.category);
 };
