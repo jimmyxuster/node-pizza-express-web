@@ -1,6 +1,8 @@
 const Service = require('egg').Service;
 
-const BASE_SELECT_MENU_SQL = 'SELECT * FROM `food` join `foodcategory` on food.categoryId = foodcategory.id'
+const desiredCols = ['food.id', 'food.name', 'foodcategory.name as categoryName', 'food.description', 'food.createTime', 'price', 'discountPrice', 'amount', 'categoryId', 'image_path', 'month_sales', 'icon_url'];
+const BASE_SELECT_MENU_SQL = 'SELECT * FROM `food` join `foodcategory` on food.categoryId = foodcategory.id';
+const SELECT_MENU_SQL = BASE_SELECT_MENU_SQL.replace('*', desiredCols.join(','));
 
 class MenuService extends Service {
   async getMenu(query) {
@@ -16,7 +18,7 @@ class MenuService extends Service {
     });
     const where = this.app.mysql._where(queryItems);
     const limit = this.app.mysql._limit(+pageSize, page * pageSize);
-    const data = await this.app.mysql.query(`${BASE_SELECT_MENU_SQL}${where}${limit}`);
+    const data = await this.app.mysql.query(`${SELECT_MENU_SQL}${where}${limit}`);
     const count = await this.app.mysql.query(`${BASE_SELECT_MENU_SQL}${where}`.replace('*', 'count(*) as total'));
     return {
       data,
