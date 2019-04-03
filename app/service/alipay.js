@@ -61,7 +61,7 @@ class AlipayService extends Service {
     }
   }
   async wapPay(opts) {
-    const query = this._generatePayQuery(opts);
+    const query = await this._generatePayQuery(opts);
     return 'https://openapi.alipaydev.com/gateway.do?' + query;
   }
   async appPay(opts) {
