@@ -127,6 +127,7 @@ class AlipayService extends Service {
     }
   }
   async notify (body) {
+    this.ctx.logger.info('Notify: %s', JSON.stringify(body));
     if (alipayClient.signVerify(body)) {
       const { out_trade_no: outTradeNo, trade_status } = body;
       const status = STATUS_MAP[trade_status];
