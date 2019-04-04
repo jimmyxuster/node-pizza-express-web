@@ -7,7 +7,7 @@ const alipayClient = new Alipay({
   appId: '2016092600602322',
   sandbox: true,
   notifyUrl: 'http://47.102.207.157:8080/node_api/notify',
-  signType: 'RSA',
+  signType: 'RSA2',
   rsaPrivate: path.join(__dirname, '../alipay/pem/private.pem'),
   rsaPublic: path.join(__dirname, '../alipay/pem/public.pem')
 });
