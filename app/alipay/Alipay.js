@@ -55,6 +55,30 @@ class Alipay {
     return utl.processParams(params, this.rsaPrivate, this.signType);
   }
 
+  appPay (opts) {
+    const biz_content = {
+      body: opts.body,
+      subject: opts.subject,
+      out_trade_no: opts.outTradeId,
+      timeout_express: opts.timeout,
+      total_amount: opts.amount,
+      seller_id: opts.sellerId,
+      product_code: 'QUICK_MSECURITY_PAY',
+      goods_type: opts.goodsType,
+      passback_params: opts.passbackParams,
+      promo_params: opts.promoParams,
+      extend_params: opts.extendParams,
+      enable_pay_channels: opts.enablePayChannels,
+      disable_pay_channels: opts.disablePayChannels,
+      store_id: opts.storeId
+    };
+
+    var params = this.makeParams('alipay.trade.app.pay', biz_content);
+    params.notify_url = this.notifyUrl;
+
+    return utl.processParams(params, this.rsaPrivate, this.signType);
+  }
+
   signVerify (response) {
     var ret = utl.copy(response);
     var sign = ret['sign'];
