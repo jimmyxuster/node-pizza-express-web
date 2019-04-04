@@ -8,6 +8,7 @@ module.exports = app => {
   router.get('/', controller.home.index);
   router.put('/node_api/user', controller.user.update);
   router.post('/node_api/wapPay', controller.pay.wapPay);
+  router.post('/node_api/appPay', controller.pay.appPay);
   router.post('/node_api/notify', controller.pay.notify);
   router.post('/node_api/order/requestRefund', controller.order.requestRefund);
   router.get('/node_api/manage/order', controller.order.getOrders);
