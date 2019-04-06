@@ -93,7 +93,16 @@ module.exports = appInfo => {
       password: 'pizzaexpressapp',
       database: 'pizza_express',
     }
-  }
+  };
+
+  config.multipart = {
+    mode: 'file'
+  };
+
+  config.bodyParser = {
+    jsonLimit: '20mb',
+    formLimit: '20mb',
+  };
 
   return {
     ...config,
