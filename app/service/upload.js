@@ -9,7 +9,7 @@ const cos = new COS({
 });
 const Bucket = 'pizza-express-app-1252752952';
 const Region = 'ap-shanghai';
-cos.sliceUploadFile = promisify(cos.sliceUploadFile);
+cos.putObject = promisify(cos.putObject);
 
 async function getFileMd5(resDir) {
   const stat = await fs.stat(resDir);
