@@ -1,5 +1,6 @@
 const path = require('path');
 const lodash = require('lodash');
+const moment = require('moment');
 const Service = require('egg').Service;
 const util = require('../alipay/util');
 const Alipay = require('../alipay/Alipay');
@@ -132,7 +133,7 @@ class AlipayService extends Service {
       const { out_trade_no: outTradeNo, trade_status } = body;
       const status = STATUS_MAP[trade_status];
       if (status) {
-        await this.app.mysql.update('order', {status, payTime: this.app.mysql.literals.now}, {where: {outTradeId: outTradeNo}, columns: ['status']});
+        await this.app.mysql.update('order', {status, payTime: moment().format('YYYY-MM-DD HH:mm:ss')}, {where: {outTradeId: outTradeNo}, columns: ['status']});
         this.ctx.logger.info('Payment success, outTradeNo is %s', outTradeNo);
       }
     } else {
