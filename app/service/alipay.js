@@ -132,7 +132,7 @@ class AlipayService extends Service {
       const { out_trade_no: outTradeNo, trade_status } = body;
       const status = STATUS_MAP[trade_status];
       if (status) {
-        await this.app.mysql.update('order', {status}, {where: {outTradeId: outTradeNo}, columns: ['status']});
+        await this.app.mysql.update('order', {status, payTime: this.app.mysql.literals.now}, {where: {outTradeId: outTradeNo}, columns: ['status']});
         this.ctx.logger.info('Payment success, outTradeNo is %s', outTradeNo);
       }
     } else {
