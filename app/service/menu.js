@@ -1,6 +1,6 @@
 const Service = require('egg').Service;
 
-const desiredCols = ['food.id', 'food.name', 'foodcategory.name as categoryName', 'food.description', 'food.createTime', 'price', 'discountPrice', 'amount', 'categoryId', 'image_path', 'month_sales', 'icon_url'];
+const desiredCols = ['food.id', 'food.name', 'foodcategory.name as categoryName', 'food.description', 'food.createTime', 'expired', 'price', 'discountPrice', 'amount', 'categoryId', 'image_path', 'month_sales', 'icon_url'];
 const BASE_SELECT_MENU_SQL = 'SELECT * FROM `food` join `foodcategory` on food.categoryId = foodcategory.id';
 const SELECT_MENU_SQL = BASE_SELECT_MENU_SQL.replace('*', desiredCols.join(','));
 
