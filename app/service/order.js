@@ -9,7 +9,7 @@ const getTimeRangeWhere = (column, range) => {
   let rangePoints = [];
   [0, 1].forEach(index => {
     if (range[index]) {
-      rangePoints.push(moment(range[index].replace(/(^"|"$)/g, '')).format('YYYY-MM-DD hh:mm:ss'));
+      rangePoints.push(moment(range[index].replace(/(^"|"$)/g, '')).format('YYYY-MM-DD HH:mm:ss'));
     }
   });
   return rangePoints.map((point, index) => ` ${column} ${index === 0 ? '>' : '<'} '${point}' `).join('AND');
