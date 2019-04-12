@@ -28,8 +28,8 @@ class MenuService extends Service {
   createMenu(body) {
     return this.app.mysql.insert('food', body);
   }
-  updateMenu(body) {
-    return this.app.mysql.update('food', body);
+  updateMenu(id, body) {
+    return this.app.mysql.update('food', { id, ...body });
   }
   deleteMenu(id) {
     return this.app.mysql.delete('food', {id});

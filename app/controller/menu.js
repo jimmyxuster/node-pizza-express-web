@@ -20,7 +20,7 @@ class MenuController extends BaseController {
   }
   async update() {
     try {
-      await this.ctx.service.menu.updateMenu(this.ctx.request.body);
+      await this.ctx.service.menu.updateMenu(this.ctx.params.id, this.ctx.request.body);
       this.success();
     } catch (e) {
       this.error('更新菜单项失败');
@@ -28,7 +28,7 @@ class MenuController extends BaseController {
   }
   async destroy() {
     try {
-      await this.ctx.service.menu.deleteMenu(this.ctx.request.body);
+      await this.ctx.service.menu.deleteMenu(this.ctx.params.id);
       this.success();
     } catch (e) {
       this.error(`更新菜单项失败：${e.message}`);
