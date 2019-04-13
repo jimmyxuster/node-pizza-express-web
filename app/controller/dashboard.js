@@ -2,7 +2,12 @@ const BaseController = require('./base');
 
 class DashboardController extends BaseController {
   async platformData() {
-    this.ctx.body = await this.ctx.service.dashboard.platform();
+    const result = await this.ctx.service.dashboard.platform();
+    if (result) {
+      this.success(result);
+    } else {
+      this.error(1000, '获取平台统计数据失败，请稍后再试');
+    }
   }
 }
 
