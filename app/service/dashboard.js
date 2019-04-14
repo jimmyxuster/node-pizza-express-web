@@ -41,13 +41,53 @@ class DashboardService extends Service {
       for (let i = 0; i < 7; i++) {
         const sql = `SELECT sum(price) as sum FROM \`order\` WHERE status > -2 AND createTime >= '${now.format('YYYY-MM-DD HH:mm:ss')}' AND createTime < '${now.add(1, 'd').format('YYYY-MM-DD HH:mm:ss')}'`;
         const result = await this.app.mysql.query(sql);
+        now.subtract(1, 'd');
         incomes.unshift({
           sum: result[0].sum || 0,
           date: now.format('YYYY-MM-DD'),
         });
-        now.subtract(2, 'd');
+        now.subtract(1, 'd');
       }
       return incomes;
+    } catch (e) {
+      console.error(e)
+      return null;
+    }
+  }
+
+  async getOrderAmountRange() {
+    const result = [];
+    const range = [[0, 49], [50, 99], [100]];
+    try {
+      await Promise.all(range.map(r => (async () => {
+        const { count } = await this.app.mysql.queryOne(`SELECT count(*) as count FROM \`order\` WHERE price >= ${r[0]} ${r[1] ? 'AND price <= ' + r[1] : ''}`);
+        result.push({
+          range: r,
+          count,
+        });
+      })()));
+      return result;
+    } catch (e) {
+      console.error(e)
+      return null;
+    }
+  }
+
+  async getLatestUserGrowth() {
+    const newUserCount = [];
+    try {
+      const now = moment().set('hour', 0).set('minute', 0).set('second', 0).set('millisecond', 0);
+      for (let i = 0; i < 7; i++) {
+        const sql = `SELECT count(*) as count FROM \`user\` WHERE createTime >= '${now.format('YYYY-MM-DD HH:mm:ss')}' AND createTime < '${now.add(1, 'd').format('YYYY-MM-DD HH:mm:ss')}'`;
+        const result = await this.app.mysql.query(sql);
+        now.subtract(1, 'd');
+        newUserCount.unshift({
+          count: result[0].count || 0,
+          date: now.format('YYYY-MM-DD'),
+        });
+        now.subtract(1, 'd');
+      }
+      return newUserCount;
     } catch (e) {
       console.error(e)
       return null;
