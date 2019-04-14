@@ -77,13 +77,13 @@ class DashboardService extends Service {
     const newUserCount = [];
     try {
       const now = moment().set('hour', 0).set('minute', 0).set('second', 0).set('millisecond', 0);
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < 5; i++) {
         const sql = `SELECT count(*) as count FROM \`user\` WHERE createTime >= '${now.format('YYYY-MM-DD HH:mm:ss')}' AND createTime < '${now.add(1, 'd').format('YYYY-MM-DD HH:mm:ss')}'`;
         const result = await this.app.mysql.query(sql);
         now.subtract(1, 'd');
         newUserCount.unshift({
           count: result[0].count || 0,
-          date: now.format('YYYY-MM-DD'),
+          date: now.format('MM-DD'),
         });
         now.subtract(1, 'd');
       }
