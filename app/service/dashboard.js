@@ -1,4 +1,5 @@
 const Service = require('egg').Service;
+const moment = require('moment');
 
 const platformDashboards = [
   {
@@ -27,6 +28,26 @@ class DashboardService extends Service {
         name: platformDashboards[index].name,
         value: result[0].count,
       }));
+    } catch (e) {
+      console.error(e)
+      return null;
+    }
+  }
+
+  async getLatestIncome() {
+    const incomes = [];
+    try {
+      const now = moment().set('hour', 0).set('minute', 0).set('second', 0).set('millisecond', 0);
+      for (let i = 0; i < 7; i++) {
+        const sql = `SELECT sum(price) as sum FROM \`order\` WHERE status > -2 AND createTime >= '${now.format('YYYY-MM-DD HH:mm:ss')}' AND createTime < '${now.add(1, 'd').format('YYYY-MM-DD HH:mm:ss')}'`;
+        const result = await this.app.mysql.query(sql);
+        incomes.unshift({
+          sum: result[0].sum || 0,
+          date: now.format('YYYY-MM-DD'),
+        });
+        now.subtract(2, 'd');
+      }
+      return incomes;
     } catch (e) {
       console.error(e)
       return null;
