@@ -62,7 +62,7 @@ class DashboardService extends Service {
       await Promise.all(range.map(r => (async () => {
         const { count } = await this.app.mysql.queryOne(`SELECT count(*) as count FROM \`order\` WHERE price >= ${r[0]} ${r[1] ? 'AND price <= ' + r[1] : ''}`);
         result.push({
-          range: r,
+          range: r.length === 1 ? `${r[0]}以上` : `${r[0]}~${r[1]}`,
           count,
         });
       })()));
