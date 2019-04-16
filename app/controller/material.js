@@ -20,6 +20,15 @@ class MaterialController extends BaseController {
       this.error(1000, '获取原料种类失败');
     }
   }
+
+  async foodMaterials() {
+    try {
+      this.success(await this.service.material.getFoodMaterials(this.ctx.params.foodId));
+    } catch (e) {
+      this.ctx.logger.error(e);
+      this.error(1000, '获取关联原料失败');
+    }
+  }
 }
 
 module.exports = MaterialController;

@@ -14,6 +14,13 @@ class MaterialService extends Service {
   getMaterialCategories() {
     return this.app.mysql.query('SELECT distinct(name) FROM `material`');
   }
+
+  getFoodMaterials(foodId) {
+    return this.app.mysql.select('foodmaterial', {
+      where: {foodId},
+      columns: ['materialName', 'amount'],
+    });
+  }
 }
 
 module.exports = MaterialService;
