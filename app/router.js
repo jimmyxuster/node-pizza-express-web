@@ -14,10 +14,12 @@ module.exports = app => {
   router.get('/node_api/manage/order', controller.order.getOrders);
   router.get('/node_api/manage/dashboard', controller.dashboard.platformData);
   router.get('/node_api/manage/latestIncome', controller.dashboard.latestIncome);
+  router.get('/node_api/manage/materialCategory', controller.material.materialCategory);
   router.get('/node_api/manage/orderAmountRange', controller.dashboard.orderAmountRange);
   router.get('/node_api/manage/getLatestUserGrowth', controller.dashboard.getLatestUserGrowth);
   router.post('/node_api/manage/order/refund', controller.pay.refund);
   router.post('/node_api/upload', controller.upload.upload);
+  router.put('/node_api/material/storage', controller.material.updateStorage);
   router.resources('menu', '/node_api/manage/menu', controller.menu);
   router.resources('category', '/node_api/manage/category', controller.category);
 };
