@@ -28,8 +28,22 @@ class MenuService extends Service {
   createMenu(body) {
     return this.app.mysql.insert('food', body);
   }
-  updateMenu(id, body) {
-    return this.app.mysql.update('food', { id, ...body });
+  async updateMenu(id, body) {
+    const { material, ...restProps } = body;
+    const insertRows = Array.isArray(material) ? material.map(item => ({
+      foodId: id,
+      ...item,
+    })) : [];
+    const transaction = await this.app.mysql.beginTransaction();
+    try {
+      await transaction.update('food', { id, ...restProps });
+      await transaction.delete('foodmaterial', {foodId: id});
+      await transaction.insert('foodmaterial', insertRows);
+      await transaction.commit();
+    } catch (e) {
+      await transaction.rollback();
+      throw e;
+    }
   }
   deleteMenu(id) {
     return this.app.mysql.delete('food', {id});
