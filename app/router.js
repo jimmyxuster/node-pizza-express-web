@@ -19,6 +19,7 @@ module.exports = app => {
   router.get('/node_api/manage/orderAmountRange', controller.dashboard.orderAmountRange);
   router.get('/node_api/manage/getLatestUserGrowth', controller.dashboard.getLatestUserGrowth);
   router.post('/node_api/manage/order/assignRider', controller.order.assignRider);
+  router.post('/node_api/manage/order/cancelRider', controller.order.cancelRider);
   router.post('/node_api/manage/order/refund', controller.pay.refund);
   router.post('/node_api/upload', controller.upload.upload);
   router.put('/node_api/material/storage', controller.material.updateStorage);

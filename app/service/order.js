@@ -26,7 +26,6 @@ class UserService extends Service {
   }
   async getOrders (query) {
     const { page = 0, pageSize = 10, 'createTime[]': createTimeArr, 'arriveTime[]': arriveTimeArr, createTime, arriveTime, ...restProps } = query;
-    // console.error('restProps', restProps);
     let whereExp = this.app.mysql._where(restProps);
     const rangeWheres = [getTimeRangeWhere('order.createTime', createTime), getTimeRangeWhere('order.arriveTime', arriveTime)].filter(str => str !== '').join('AND');
     whereExp = whereExp.trim().length ? `${whereExp} ${rangeWheres ? 'AND' : ''} ${rangeWheres}` : ` ${rangeWheres ? 'WHERE' : ''} ${rangeWheres}`;
@@ -44,6 +43,12 @@ class UserService extends Service {
     await this.app.mysql.update('order', {
       id: orderId,
       riderId,
+    });
+  }
+  async cancelRider ({orderId}) {
+    await this.app.mysql.update('order', {
+      id: orderId,
+      riderId: null,
     });
   }
 }

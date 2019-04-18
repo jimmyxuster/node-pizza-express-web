@@ -26,6 +26,14 @@ class OrderController extends BaseController {
       this.error('分配骑手失败');
     }
   }
+  async cancelRider () {
+    try {
+      await this.ctx.service.order.cancelRider(this.ctx.request.body);
+      this.success();
+    } catch (e) {
+      this.error('撤销分派失败');
+    }
+  }
 }
 
 module.exports = OrderController;
