@@ -1,5 +1,6 @@
 const Service = require('egg').Service;
 const moment = require('moment');
+const util = require('../alipay/util');
 
 const getTimeRangeWhere = (column, range) => {
   if (!range) return '';
@@ -47,6 +48,31 @@ class UserService extends Service {
   }
   async cancelRider ({orderId}) {
     await this.app.mysql.query('UPDATE `order` SET riderId = NULL WHERE id = ' + orderId);
+  }
+  async estimateDeliverTime ({lat, lng, factoryId}) {
+    const rows = await this.app.mysql.select('factory', { 
+      where: {id: factoryId},
+      columns: ['lng', 'lat'],
+    });
+    if (rows[0]) {
+      const { lng: facLng, lat: facLat } = rows[0];
+      let response = await util.request({
+        url: `http://restapi.amap.com/v4/direction/bicycling?key=844bb6fb83ca83a309ee6eca3fe040dc&origin=${lng},${lat}&destination=${facLng},${facLat}`,
+        method: 'GET',
+      });
+      if (response) {
+        response = response.json();
+        const duration = lodash.get(response, ['data', 'paths', '0', 'duration']);
+        if (duration) {
+          return duration / 60 + 20;
+        } else {
+          return 30;
+        }
+      }
+      return 30;
+    } else {
+      throw new Error('工厂不存在');
+    }
   }
 }
 

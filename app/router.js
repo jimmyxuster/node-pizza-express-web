@@ -14,6 +14,7 @@ module.exports = app => {
   router.get('/node_api/manage/order', controller.order.getOrders);
   router.get('/node_api/manage/dashboard', controller.dashboard.platformData);
   router.get('/node_api/manage/latestIncome', controller.dashboard.latestIncome);
+  router.get('/node_api/manage/order/estimateDeliverTime', controller.order.estimateDeliverTime);
   router.get('/node_api/manage/materialCategory', controller.material.materialCategory);
   router.get('/node_api/manage/foodMaterials/:foodId', controller.material.foodMaterials);
   router.get('/node_api/manage/orderAmountRange', controller.dashboard.orderAmountRange);

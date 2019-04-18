@@ -34,6 +34,14 @@ class OrderController extends BaseController {
       this.error('撤销分派失败');
     }
   }
+  async estimateDeliverTime() {
+    try {
+      const time = await this.ctx.service.order.estimateDeliverTime(this.ctx.request.query);
+      this.success(time);
+    } catch (e) {
+      this.error(e.message);
+    }
+  }
 }
 
 module.exports = OrderController;
