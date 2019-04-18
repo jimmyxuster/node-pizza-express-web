@@ -46,10 +46,7 @@ class UserService extends Service {
     });
   }
   async cancelRider ({orderId}) {
-    await this.app.mysql.update('order', {
-      id: orderId,
-      riderId: null,
-    });
+    await this.app.mysql.query('UPDATE `order` SET orderId = NULL WHERE id = ' + orderId);
   }
 }
 
