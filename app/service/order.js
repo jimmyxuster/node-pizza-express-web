@@ -1,5 +1,6 @@
 const Service = require('egg').Service;
 const moment = require('moment');
+const lodash = require('lodash');
 const util = require('../alipay/util');
 
 const getTimeRangeWhere = (column, range) => {
