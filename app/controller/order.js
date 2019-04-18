@@ -18,6 +18,14 @@ class OrderController extends BaseController {
       this.error('获取订单失败');
     }
   }
+  async assignRider () {
+    try {
+      await this.ctx.service.order.assignRider(this.ctx.request.body);
+      this.success();
+    } catch (e) {
+      this.error('分配骑手失败');
+    }
+  }
 }
 
 module.exports = OrderController;

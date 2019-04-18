@@ -40,6 +40,12 @@ class UserService extends Service {
       total: total[0].total,
     }
   }
+  async assignRider (riderId, orderId) {
+    await this.app.mysql.update('order', {
+      id: orderId,
+      riderId,
+    });
+  }
 }
 
 module.exports = UserService;
